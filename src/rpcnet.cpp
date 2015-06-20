@@ -11,6 +11,7 @@
 #include "protocol.h"
 #include "sync.h"
 #include "timedata.h"
+#include "ui_interface.h"
 #include "util.h"
 #include "version.h"
 #include "deprecation.h"
@@ -556,6 +557,8 @@ UniValue setban(const UniValue& params, bool fHelp)
     }
 
     DumpBanlist(); //store banlist to disk
+    uiInterface.BannedListChanged();
+
     return NullUniValue;
 }
 
@@ -602,6 +605,8 @@ UniValue clearbanned(const UniValue& params, bool fHelp)
 
     CNode::ClearBanned();
     DumpBanlist(); //store banlist to disk
+    
+    uiInterface.BannedListChanged();
 
     return NullUniValue;
 }
