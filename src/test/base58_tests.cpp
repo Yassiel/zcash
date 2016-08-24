@@ -78,7 +78,6 @@ BOOST_AUTO_TEST_CASE(base58_DecodeBase58)
 BOOST_AUTO_TEST_CASE(base58_keys_valid_parse)
 {
     UniValue tests = read_json(std::string(json_tests::base58_keys_valid, json_tests::base58_keys_valid + sizeof(json_tests::base58_keys_valid)));
-    std::vector<unsigned char> result;
     CBitcoinSecret secret;
     CTxDestination destination;
     SelectParams(CBaseChainParams::MAIN);
@@ -130,7 +129,6 @@ BOOST_AUTO_TEST_CASE(base58_keys_valid_parse)
 BOOST_AUTO_TEST_CASE(base58_keys_valid_gen)
 {
     UniValue tests = read_json(std::string(json_tests::base58_keys_valid, json_tests::base58_keys_valid + sizeof(json_tests::base58_keys_valid)));
-    std::vector<unsigned char> result;
 
     for (size_t idx = 0; idx < tests.size(); idx++) {
         UniValue test = tests[idx];
@@ -174,7 +172,6 @@ BOOST_AUTO_TEST_CASE(base58_keys_valid_gen)
 BOOST_AUTO_TEST_CASE(base58_keys_invalid)
 {
     UniValue tests = read_json(std::string(json_tests::base58_keys_invalid, json_tests::base58_keys_invalid + sizeof(json_tests::base58_keys_invalid))); // Negative testcases
-    std::vector<unsigned char> result;
     CBitcoinSecret secret;
     CTxDestination destination;
 
