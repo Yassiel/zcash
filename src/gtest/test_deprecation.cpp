@@ -106,22 +106,6 @@ TEST_F(DeprecationTest, DeprecatedNodeErrorIsRepeatedOnStartup) {
     EXPECT_TRUE(ShutdownRequested());
 }
 
-TEST_F(DeprecationTest, DeprecatedNodeShutsDownIfOldVersionDisabled) {
-    EXPECT_FALSE(ShutdownRequested());
-    mapArgs["-disabledeprecation"] = "1.0.0";
-    EXPECT_CALL(mock_, ThreadSafeMessageBox(::testing::_, "", CClientUIInterface::MSG_ERROR));
-    EnforceNodeDeprecation(DEPRECATION_HEIGHT);
-    EXPECT_TRUE(ShutdownRequested());
-}
-
-TEST_F(DeprecationTest, DeprecatedNodeKeepsRunningIfCurrentVersionDisabled) {
-    EXPECT_FALSE(ShutdownRequested());
-    mapArgs["-disabledeprecation"] = CLIENT_VERSION_STR;
-    EXPECT_CALL(mock_, ThreadSafeMessageBox(::testing::_, "", CClientUIInterface::MSG_ERROR));
-    EnforceNodeDeprecation(DEPRECATION_HEIGHT);
-    EXPECT_FALSE(ShutdownRequested());
-}
-
 TEST_F(DeprecationTest, DeprecatedNodeIgnoredOnRegtest) {
     SelectParams(CBaseChainParams::REGTEST);
     EXPECT_FALSE(ShutdownRequested());
@@ -150,9 +134,8 @@ TEST_F(DeprecationTest, AlertNotify) {
 
     // -alertnotify restricts the message to safe characters.
     auto expectedMsg = strprintf(
-        "This version will be deprecated at block height %d, and will automatically shut down. You should upgrade to the latest version of Zcash. To disable deprecation for this version, set disabledeprecation to %s.",
-        DEPRECATION_HEIGHT,
-        CLIENT_VERSION_STR);
+        "This version will be deprecated at block height %d, and will automatically shut down. You should upgrade to the latest version of Zcash.",
+        DEPRECATION_HEIGHT);
 
     // Windows built-in echo semantics are different than posixy shells. Quotes and
     // whitespace are printed literally.
