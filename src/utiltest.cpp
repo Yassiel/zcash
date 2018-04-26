@@ -7,7 +7,7 @@
 #include "consensus/upgrades.h"
 
 CWalletTx GetValidReceive(ZCJoinSplit& params,
-                          const libzcash::SpendingKey& sk, CAmount value,
+                          const libzcash::SproutSpendingKey& sk, CAmount value,
                           bool randomInputs) {
     CMutableTransaction mtx;
     mtx.nVersion = 2; // Enable JoinSplits
@@ -64,7 +64,7 @@ CWalletTx GetValidReceive(ZCJoinSplit& params,
 }
 
 libzcash::Note GetNote(ZCJoinSplit& params,
-                       const libzcash::SpendingKey& sk,
+                       const libzcash::SproutSpendingKey& sk,
                        const CTransaction& tx, size_t js, size_t n) {
     ZCNoteDecryption decryptor {sk.receiving_key()};
     auto hSig = tx.vjoinsplit[js].h_sig(params, tx.joinSplitPubKey);
@@ -78,7 +78,7 @@ libzcash::Note GetNote(ZCJoinSplit& params,
 }
 
 CWalletTx GetValidSpend(ZCJoinSplit& params,
-                        const libzcash::SpendingKey& sk,
+                        const libzcash::SproutSpendingKey& sk,
                         const libzcash::Note& note, CAmount value) {
     CMutableTransaction mtx;
     mtx.vout.resize(2);
@@ -99,12 +99,12 @@ CWalletTx GetValidSpend(ZCJoinSplit& params,
 
     {
         if (note.value > value) {
-            libzcash::SpendingKey dummykey = libzcash::SpendingKey::random();
-            libzcash::PaymentAddress dummyaddr = dummykey.address();
+            libzcash::SproutSpendingKey dummykey = libzcash::SproutSpendingKey::random();
+            libzcash::SproutPaymentAddress dummyaddr = dummykey.address();
             dummyout = libzcash::JSOutput(dummyaddr, note.value - value);
         } else if (note.value < value) {
-            libzcash::SpendingKey dummykey = libzcash::SpendingKey::random();
-            libzcash::PaymentAddress dummyaddr = dummykey.address();
+            libzcash::SproutSpendingKey dummykey = libzcash::SproutSpendingKey::random();
+            libzcash::SproutPaymentAddress dummyaddr = dummykey.address();
             libzcash::Note dummynote(dummyaddr.a_pk, (value - note.value), uint256(), uint256());
             tree.append(dummynote.cm());
             dummyin = libzcash::JSInput(tree.witness(), dummynote, dummykey);

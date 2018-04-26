@@ -35,7 +35,7 @@ uint256 Note::cm() const {
     return result;
 }
 
-uint256 Note::nullifier(const SpendingKey& a_sk) const {
+uint256 Note::nullifier(const SproutSpendingKey& a_sk) const {
     return PRF_nf(a_sk, rho);
 }
 
@@ -48,7 +48,7 @@ NotePlaintext::NotePlaintext(
     r = note.r;
 }
 
-Note NotePlaintext::note(const PaymentAddress& addr) const
+Note NotePlaintext::note(const SproutPaymentAddress& addr) const
 {
     return Note(addr.a_pk, value, rho, r);
 }

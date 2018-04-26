@@ -21,7 +21,7 @@ public:
     Note();
 
     uint256 cm() const;
-    uint256 nullifier(const SpendingKey& a_sk) const;
+    uint256 nullifier(const SproutSpendingKey& a_sk) const;
 };
 
 class NotePlaintext {
@@ -35,7 +35,7 @@ public:
 
     NotePlaintext(const Note& note, boost::array<unsigned char, ZC_MEMO_SIZE> memo);
 
-    Note note(const PaymentAddress& addr) const;
+    Note note(const SproutPaymentAddress& addr) const;
 
     ADD_SERIALIZE_METHODS;
 
